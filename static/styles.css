@@ -2,6 +2,7 @@
     --background-color: #252526;
     --background-color-block: #1e1e1e;
     --background-color-parent: #2d2d30;
+    --background-color-language-selector: #3e3e42;
     --text-color: #fff;
     --font-family: Verdana;
 }
@@ -53,6 +54,23 @@ input {
 }
 
 .block input:focus-visible {
+    outline: none;
+}
+
+.language-selector {
+    background-color: var(--background-color-language-selector);
+    color: var(--text-color);
+    padding: 1.5px 5px;
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border: 0;
+    border-radius: 15px;
+}
+
+.language-selector:focus-visible {
     outline: none;
 }
 

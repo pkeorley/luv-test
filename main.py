@@ -2,49 +2,57 @@ from reactpy import component, html, use_location, use_state
 from reactpy.backend.flask import configure, Options
 from reactpy_router import route, simple
 
-from calculator import Calculator
+from modules.calculator import Calculator
 from client import FlaskApplication
 from modules.errors import MissingLink
-from modules.labels import Labels
+from modules.labels import Labels, Languages
 
 app = FlaskApplication()
 
 
 @component
 def Main():
+    _ = Labels()
+    language, set_language = use_state(Languages.EN)
+
     boy_name, set_boy_name = use_state("")
     girl_name, set_girl_name = use_state("")
 
-    amour, set_amour = use_state(Labels.UNDEFINED)
-
-    def clicked_love_calculator_button(e):
-        set_amour(str(Labels.CALCULATED).format(
-            boy_name=boy_name,
-            girl_name=girl_name,
-            percent=Calculator.calculate(
-                boy_name=boy_name,
-                girl_name=girl_name
-            )
-        ))
+    def change_page_language(e):
+        set_language(e["target"]["value"])
 
     return html.div(
         {"class_name": "application"},
+
+        html.select({"class_name": "language-selector", "on_change": change_page_language}, (
+            html.option({"value": language}, language)
+            for language in _.available_languages
+        )),
+
         html.div(
             {"class_name": "parent"},
             html.div(
-                html.p(amour)
+                html.p(
+                    (_.get(language, "CALCULATED").format(
+                        boy_name=boy_name,
+                        girl_name=girl_name,
+                        percent=Calculator.calculate(
+                            boy_name=boy_name,
+                            girl_name=girl_name
+                        )
+                    )) if all((boy_name, girl_name)) else _.get(language, "UNDEFINED")
+                )
             ),
             html.div(
                 {"class_name": "block"},
-                html.label({"for": "girl-name"}, Labels.GIRL_NAME),
+                html.label({"for": "girl-name"}, _.get(language, "GIRL_NAME")),
                 html.input({"id": "girl-name", "on_change": lambda e: set_girl_name(e["target"]["value"])})
             ),
             html.div(
                 {"class_name": "block"},
-                html.label({"for": "boy-name"}, Labels.BOY_NAME),
+                html.label({"for": "boy-name"}, _.get(language, "BOY_NAME")),
                 html.input({"id": "boy-name", "on_change": lambda e: set_boy_name(e["target"]["value"])})
-            ),
-            html.button({"on_click": clicked_love_calculator_button}, Labels.CALCULATE_LOVE)
+            )
         )
     )
 
@@ -68,8 +76,6 @@ configure(app, root, options=Options(
 ))
 
 
-app.run(
-    debug=True,
-    port=8080
-)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True, port=8080)
 
