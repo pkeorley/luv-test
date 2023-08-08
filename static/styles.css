@@ -1,0 +1,64 @@
+:root {
+    --background-color: #252526;
+    --background-color-block: #1e1e1e;
+    --background-color-parent: #2d2d30;
+    --text-color: #fff;
+    --font-family: Verdana;
+}
+
+html {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+input {
+    font-family: var(--font-family);
+}
+
+.parent {
+    padding: 10px 15px;
+    border-radius: 15px;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: var(--background-color-parent);
+    text-align: center;
+}
+
+.parent button {
+    font-family: var(--font-family);
+    border-radius: 15px;
+    padding: 5px 15px;
+    margin: 5px 2.5px;
+    border: 0;
+}
+
+.block {
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 15px;
+    background-color: var(--background-color-block);
+}
+
+.block label {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 7.5px 0 0;
+}
+
+.block input {
+    border-radius: 10px;
+    padding: 3px 7.5px;
+    border: 1px solid black;
+}
+
+.block input:focus-visible {
+    outline: none;
+}
+
+#app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 95vh;
+}
